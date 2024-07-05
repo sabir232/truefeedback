@@ -90,7 +90,7 @@ const page = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gray-800">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
@@ -106,26 +106,25 @@ const page = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter Username "
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debounced(e.target.value);
-                      }}
-                    />
-                  </FormControl>
+                  <Input
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setUsername(e.target.value);
+                    }}
+                  />
                   {isCheckingMessage && <Loader2 className="animate-spin" />}
-                  <p
-                    className={`text-sm ${
-                      usernameMessage === "Username is unique"
-                        ? "text-green-500"
-                        : "text-red-500"
-                    }`}
-                  >
-                    test{usernameMessage}
-                  </p>
+                  {!isCheckingMessage && usernameMessage && (
+                    <p
+                      className={`text-sm ${
+                        usernameMessage === "Username is unique"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {usernameMessage}
+                    </p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -136,44 +135,41 @@ const page = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter Email " {...field} />
-                  </FormControl>
+                  <Input {...field} name="email" />
+                  <p className="text-muted text-gray-400 text-sm">
+                    We will send you a verification code
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               name="password"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter Password "
-                      {...field}
-                    />
-                  </FormControl>
+                  <Input type="password" {...field} name="password" />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
                 </>
               ) : (
-                "Sign up"
+                "Sign Up"
               )}
             </Button>
           </form>
         </Form>
         <div className="text-center mt-4">
           <p>
-            Already a member?{""}
+            Already a member?{" "}
             <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
               Sign in
             </Link>
